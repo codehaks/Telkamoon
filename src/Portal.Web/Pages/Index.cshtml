@@ -5,5 +5,27 @@
 
 <h1>Welcome</h1>
 <hr />
+<div id="status"></div>
 
 @await Component.InvokeAsync("UserList")
+
+
+
+
+@section scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/statushub").build();
+
+        connection.on("updateStatus", function (user, status) {
+            if (user !=null) {
+                $("#status").append('<p>' + user + '->' + status + '</p>');
+            }
+
+
+        });
+
+        connection.start();
+
+    </script>
+}

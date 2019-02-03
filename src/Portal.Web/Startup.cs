@@ -48,10 +48,13 @@ namespace Portal.Web
             }
             app.UseAuthentication();
             app.UseStaticFiles();
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<ChatHub>("/chathub");
+                routes.MapHub<StatusHub>("/statusHub");
             });
+
             app.UseMvc();
         }
     }

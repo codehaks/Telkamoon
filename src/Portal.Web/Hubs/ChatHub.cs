@@ -12,5 +12,8 @@ namespace Portal.Web.Hubs
         {
             Clients.User(userId).SendAsync("updateMessages",fromUser, message);
         }
+
+       
+
     }
 }
