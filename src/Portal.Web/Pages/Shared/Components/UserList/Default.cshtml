@@ -1,6 +1,22 @@
-﻿@model  IEnumerable<Portal.Domain.Models.ApplicationUser>
+﻿@model IEnumerable<Portal.Domain.Models.ApplicationUser>
 
-@foreach (var item in Model)
-{
-    <p>@item.UserName</p>
-}
+<div class="row">
+    <div class="col-3">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            @foreach (var item in Model)
+            {
+                <a class="nav-link" id="v-pills-@item.UserName-tab" data-toggle="pill" href="#v-pills-@item.UserName" role="tab">@item.UserName</a>
+            }
+
+
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            @foreach (var item in Model)
+            {
+            <div class="tab-pane fade" id="v-pills-@item.UserName" role="tabpanel">Chat with @item.UserName Here...</div>
+            }
+        </div>
+    </div>
+</div>
