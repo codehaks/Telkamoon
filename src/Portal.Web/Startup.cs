@@ -15,7 +15,7 @@ namespace Portal.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PortalDbContext>(options =>
-             options.UseSqlite("Data Source=books.db"));
+             options.UseSqlite("Data Source=Telkamoon.sqlite"));
 
 
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -23,7 +23,7 @@ namespace Portal.Web
                 .AddEntityFrameworkStores<PortalDbContext>();
 
             services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
 
