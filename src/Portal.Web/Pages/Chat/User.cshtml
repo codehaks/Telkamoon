@@ -7,15 +7,41 @@
 <h1>Chat with @Model.UserName</h1>
 <hr />
 <div class="form-inline">
-    <input class="form-control" type="text" />
-    <button class="btn btn-primary">Send</button>
+    <input class="form-control" type="text" id="message"/>
+    <button class="btn btn-primary" id="send">Send</button>
 </div>
 
 <div id="chat"></div>
 
 @section scripts{
+
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
     <script>
 
+        var userId = '@Model.UserId';
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+
+        connection.on("updateMessages", function (message) {
+            $("#chat").append('<p>'+message+'</p>');
+        });
+
+        connection.start();
+
+        $('#send').click(function () {
+            var msg = $('#message').val();
+              $("#chat").append('<p>'+msg+'</p>');
+             connection.invoke("SendMessage",userId,msg );
+        });
     </script>
+
+    @*<script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+
+            }
+        });
+    </script>*@
 }
 

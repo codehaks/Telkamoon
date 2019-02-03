@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Portal.Domain.Models;
 using Portal.Persistance;
+using Portal.Web.Hubs;
 using System;
 
 namespace Portal.Web
@@ -33,7 +34,7 @@ namespace Portal.Web
 
 
             });
-
+            services.AddSignalR();
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -47,6 +48,10 @@ namespace Portal.Web
             }
             app.UseAuthentication();
             app.UseStaticFiles();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chathub");
+            });
             app.UseMvc();
         }
     }
