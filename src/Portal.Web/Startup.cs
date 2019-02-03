@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Portal.Application.Books;
 using Portal.Persistance;
 
 namespace Portal.Web
@@ -23,7 +22,6 @@ namespace Portal.Web
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<PortalDbContext>();
 
-            services.AddTransient<IBookService, BookService>();
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

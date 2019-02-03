@@ -1,5 +1,4 @@
-﻿using Portal.Domain.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Portal.Persistance
@@ -11,7 +10,6 @@ namespace Portal.Persistance
         {
         }
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Order> Orders { get; set; }
+
     }
 }
