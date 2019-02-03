@@ -7,7 +7,7 @@
 <h1>Chat with @Model.UserName</h1>
 <hr />
 <div class="form-inline">
-    <input class="form-control" type="text" id="message"/>
+    <input class="form-control" type="text" id="message" />
     <button class="btn btn-primary" id="send">Send</button>
 </div>
 
@@ -18,12 +18,16 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 
     <script>
-
+        var toUser = '@Model.UserName';
+        var fromUser = '@Model.FromUser';
         var userId = '@Model.UserId';
         var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
 
-        connection.on("updateMessages", function (message) {
-            $("#chat").append('<p>'+message+'</p>');
+        connection.on("updateMessages", function (fUser, message) {
+            if (fUser==toUser) {
+                $("#chat").append('<p>'+message+'</p>');
+            }
+
         });
 
         connection.start();
@@ -31,17 +35,17 @@
         $('#send').click(function () {
             var msg = $('#message').val();
               $("#chat").append('<p>'+msg+'</p>');
-             connection.invoke("SendMessage",userId,msg );
+             connection.invoke("SendMessage",userId,fromUser,msg );
         });
     </script>
 
     @*<script>
-        var app = new Vue({
-            el: "#app",
-            data: {
+            var app = new Vue({
+                el: "#app",
+                data: {
 
-            }
-        });
-    </script>*@
+                }
+            });
+        </script>*@
 }
 

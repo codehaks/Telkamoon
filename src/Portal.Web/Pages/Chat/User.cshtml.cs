@@ -18,6 +18,7 @@ namespace Portal.Web.Pages.Chat
             _userManager = userManager;
         }
 
+        public string FromUser { get; set; }
         public string UserName { get; set; }
         public string UserId { get; set; }
         public async Task<IActionResult> OnGet(string userName)
@@ -26,7 +27,7 @@ namespace Portal.Web.Pages.Chat
             UserId = user.Id;
 
             UserName = userName;
-
+            FromUser = User.Identity.Name;
             return Page();
         }
     }
