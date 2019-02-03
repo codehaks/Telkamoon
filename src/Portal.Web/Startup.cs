@@ -45,7 +45,7 @@ namespace Portal.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvc();
         }
