@@ -1,0 +1,37 @@
+﻿@page
+@model Portal.Web.Pages.Admin.Users.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Users</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+ 
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Output)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+
+          
+                <td>
+          
+                    <a asp-action="Details" asp-route-bookid="@item.Id">Details</a> |
+                  
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

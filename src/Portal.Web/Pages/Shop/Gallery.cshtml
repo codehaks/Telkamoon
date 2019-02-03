@@ -1,0 +1,15 @@
+﻿@page
+@model Portal.Web.Pages.Shop.GalleryModel
+@{
+    ViewData["Title"] = "Gallery";
+}
+
+<h2>Book Gallery</h2>
+<hr />
+
+@foreach (var book in Model.Output)
+{
+    <partial name="_BookItem" model="book" />
+    <hr />
+}
+

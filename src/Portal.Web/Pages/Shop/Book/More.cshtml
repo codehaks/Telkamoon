@@ -1,0 +1,57 @@
+﻿@page "/book/more/{bookId}/{name?}"
+@model Portal.Web.Pages.Shop.Book.MoreModel
+@{
+    ViewData["Title"] = "More";
+}
+
+<h2>@ViewData["Title"] about @Model.Output.Name</h2>
+<hr />
+
+<div>
+
+    <img src="@Model.Output.ImagePath" alt="@Model.Output.Name" class="img-responsive" />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Output.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Output.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Output.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Output.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Output.Author)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Output.Author)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Output.Year)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Output.Year)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Output.Pages)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Output.Pages)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Output.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Output.Price)
+        </dd>
+    </dl>
+</div>
+<div>
+
+    <a asp-page="/shop/gallery">Back to Gallery</a>
+</div>
+
+

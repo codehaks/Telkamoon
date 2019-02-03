@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book-IT - @ViewData["Title"]</title>
+    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <partial name="_Navbar" />
+
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-9">@RenderBody()</div>
+            <div class="col-3"><partial name="~/pages/admin/shared/_sidebar.cshtml" /></div>
+
+        </div>
+    </div>
+
+
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

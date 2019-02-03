@@ -1,0 +1,52 @@
+﻿@page
+@model Portal.Web.Pages.Admin.Books.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Book List</h2>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Add new...</a>
+</p>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-info" role="alert">
+        @TempData["message"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Output)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-page="Edit" asp-route-bookid="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-bookid="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-bookid="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
