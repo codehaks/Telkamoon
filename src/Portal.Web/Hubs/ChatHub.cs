@@ -10,10 +10,8 @@ namespace Portal.Web.Hubs
     {
         public void SendMessage(string userId,string fromUser,string message)
         {
-            Clients.User(userId).SendAsync("updateMessages",fromUser, message);
+            Clients.User(userId)
+                .SendAsync("updateMessages",fromUser, message);
         }
-
-       
-
     }
 }

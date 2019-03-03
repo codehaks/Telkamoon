@@ -15,7 +15,10 @@
 @section scripts{
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script>
-        var connection = new signalR.HubConnectionBuilder().withUrl("/statushub").build();
+        var connection = new signalR
+            .HubConnectionBuilder()
+            .withUrl("/statushub")
+            .build();
 
         connection.on("updateStatus", function (user, status) {
             if (user !=null) {
