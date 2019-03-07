@@ -11,6 +11,7 @@ namespace Portal.Persistance
         {
         }
 
+        public DbSet<Message> Messages { get; set; }
 
     }
 }

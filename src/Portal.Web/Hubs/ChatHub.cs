@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Portal.Persistance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,22 @@ namespace Portal.Web.Hubs
 {
     public class ChatHub : Hub
     {
-        public void SendMessage(string userId,string fromUser,string message)
+        private readonly PortalDbContext _db;
+
+        public ChatHub(PortalDbContext db)
         {
+            _db = db;
+        }
+
+        public void SendMessage(string userId, string fromUser, string message)
+        {
+            _db.Messages.Add(new Domain.Models.Message
+            {
+                Body = message
+            });
+
             Clients.User(userId)
-                .SendAsync("updateMessages",fromUser, message);
+                .SendAsync("updateMessages", fromUser, message);
         }
     }
 }
