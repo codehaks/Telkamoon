@@ -16,15 +16,17 @@ namespace Portal.Web.Hubs
             _db = db;
         }
 
-        public void SendMessage(string userId, string fromUser, string message)
+        public void SendMessage(string fromUserId, string toUserId, string message)
         {
             _db.Messages.Add(new Domain.Models.Message
             {
                 Body = message
             });
 
-            Clients.User(userId)
-                .SendAsync("updateMessages", fromUser, message);
+            _db.SaveChanges();
+
+            Clients.User(toUserId)
+                .SendAsync("updateMessages", fromUserId,toUserId, message);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿@page
+
+@using Portal.Web.Common.Extentions
 @{
     ViewData["Title"] = "Home";
 }
@@ -28,10 +30,14 @@
                             </div>
                             <div class="card-body">
 
-                                <input class="form-control" id="message" v-model="message" v-on:keyup.enter.prevent="sendMessage" />
-                                <button class="btn btn-primary m-1" id="send" v-on:click="sendMessage"> <i class="fa fa-paper-plane"></i></button>
+                                <input class="form-control" id="message" v-model="message" v-on:keyup.enter.prevent="sendMessage(tab)" />
+                                <button class="btn btn-primary m-1" id="send" v-on:click="sendMessage(tab)"> <i class="fa fa-paper-plane"></i></button>
 
                             </div>
+
+                            <ul class="list-group list-group-flush" v-for="(message,index) in messageList">
+                                <li class="list-group-item">{{message.message}}</li>
+                            </ul>
                         </div>
                     </div>
                 </template>
@@ -53,10 +59,37 @@
                 users: [],
                 selectedTab: null,
                 connection: "",
-
-                message: ""
+                message: "",
+                messageList: [],
+                fromUserName: "@User.Identity.Name",
+                fromUserId:"@User.GetUserId()"
             },
-            methods: {},
+            methods: {
+                sendMessage: function (tab) {
+
+                    console.table(tab);
+
+                    var vm = this;
+
+                    var msg = {
+                        fromUserId: vm.fromUserId,
+                        fromUserName: vm.fromUserName,
+                        message: vm.message
+                    };
+
+                    vm.messageList.splice(0, 0, msg);
+
+                     var index = vm.messageList.length - 1;
+
+                this.connection.send("SendMessage", vm.fromUserId,  tab.userId, vm.message, )
+                    .then(function () {
+
+                        console.log("message sent." + vm.message);
+                        vm.messageList[0].isSend = true;
+
+                    });
+                }
+            },
             created: function () { },
             mounted: function () {
                 var vm = this;
@@ -81,19 +114,25 @@
                         //vm.clearData();
                     });
 
-                //vm.connection = new signalR
-                //    .HubConnectionBuilder()
-                //    .withUrl("/chathub")
-                //    .build();
+                vm.connection = new signalR
+                    .HubConnectionBuilder()
+                    .withUrl("/chatHub")
+                    .build();
 
-                //connection.on("updateMessages", function (fUser, message) {
-                //    if (fUser == toUser) {
-                //        $("#chat").append('<p>' + message + '</p>');
-                //    }
+                vm.connection.on("updateMessages", function (fromUserId, toUserId,message) {
 
-                //});
+                      var msg = {
+                        fromUserId: fromUserId,
+                        fromUserName: toUserId,
+                        message: message
+                    };
 
-                //connection.start();
+                    vm.messageList.splice(0, 0, msg)
+                    console.table(msg);
+
+                });
+
+                vm.connection.start();
             }
         });
     </script>
