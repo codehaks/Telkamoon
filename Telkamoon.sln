@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28218.60
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{997DA3A9-E5F0-4225-99C0-4EE1A0B14CE8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F2AEBD46-A536-48E7-82E2-AF6A655874AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portal", "src\Portal\Portal.csproj", "{E4EE1CAA-214E-4983-8819-889F046263F6}"
 EndProject
@@ -37,5 +35,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E4EE1CAA-214E-4983-8819-889F046263F6} = {997DA3A9-E5F0-4225-99C0-4EE1A0B14CE8}
 		{7F54977D-79B2-491F-B41F-9A539C4C2857} = {997DA3A9-E5F0-4225-99C0-4EE1A0B14CE8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5388B3D-0D82-4202-90DB-2771F7BBDF60}
 	EndGlobalSection
 EndGlobal
