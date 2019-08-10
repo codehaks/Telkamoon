@@ -12,8 +12,6 @@
             <th>
                 Name
             </th>
- 
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -22,13 +20,6 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-
-          
-                <td>
-          
-                    <a asp-action="Details" asp-route-bookid="@item.Id">Details</a> |
-                  
                 </td>
             </tr>
         }
