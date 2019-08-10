@@ -36,7 +36,9 @@
                             </div>
 
                             <ul class="list-group list-group-flush" v-for="(message,index) in messageList">
-                                <li class="list-group-item"  v-if="message.fromUserId==tab.userId || message.fromUserId==tab.userId">{{message.message}}</li>
+                                <li class="list-group-item" v-if="message.fromUserId==tab.userId || message.fromUserId==tab.userId">
+                                    {{message.message}}
+                                </li>
                             </ul>
                         </div>
                     </div>
