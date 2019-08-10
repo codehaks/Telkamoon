@@ -26,7 +26,18 @@ namespace Portal.Web.Hubs
             _db.SaveChanges();
 
             Clients.User(toUserId)
-                .SendAsync("updateMessages", fromUserId,toUserId, message);
+                .SendAsync("updateMessages", fromUserId, toUserId, message);
+        }
+
+
+        public override async Task OnConnectedAsync()
+        {
+            await Clients.All.SendAsync("updateUserStatus", Context.User.Identity.Name, true);
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await Clients.All.SendAsync("updateUserStatus", Context.User.Identity.Name, false);
         }
     }
 }
