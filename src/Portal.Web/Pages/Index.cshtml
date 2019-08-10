@@ -83,7 +83,10 @@
                         fromUserId: vm.fromUserId,
                         toUserId:tab.userId,
                         message: vm.message,
-                        fromUserName: vm.fromUserName
+                        fromUserName: vm.fromUserName,
+                        status: "",
+                        isSend: false,
+                        isDelivered:false
                     };
 
                     vm.messageList.splice(0, 0, msg);
