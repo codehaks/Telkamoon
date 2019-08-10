@@ -19,10 +19,19 @@
         </div>
         <div class="col-9">
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
-                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+                <template v-for="(tab,index) in tabs">
+                    <div class="tab-pane fade" :id="'v-pills-'+tab.userName" role="tabpanel" :aria-labelledby="'v-pills-'+tab.userName+'-tab'">
+
+                        <div class="card">
+                            <div class="card-header bg-primary">
+                                {{tab.userName}}
+                            </div>
+                            <div class="card-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
@@ -58,12 +67,12 @@
                                 unread: 0,
                                 status: false
                             };
-
                             vm.tabs.push(newTab);
-
-                            console.log("Done");
-                            console.table(vm.tabs);
                         }
+
+                        console.log("Done");
+                        console.table(vm.tabs);
+
                     }).fail(function () {
                         //toastr.error("Can not add new bug!");
                     }).always(function () {
