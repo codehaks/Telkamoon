@@ -10,7 +10,7 @@
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <template v-for="(tab,index) in tabs">
-                    <a class="nav-link" style="border-radius:0;padding-bottom:9px" :id="'v-pills-'+tab.userName+'-tab'" data-toggle="pill" :href="'#v-pills-'+tab.userName" role="tab" :aria-controls="'v-pills-'+tab.userName" aria-selected="false">
+                    <a class="nav-link" v-on:click="getChatHistory(tab)" style="border-radius:0;padding-bottom:9px" :id="'v-pills-'+tab.userName+'-tab'" data-toggle="pill" :href="'#v-pills-'+tab.userName" role="tab" :aria-controls="'v-pills-'+tab.userName" aria-selected="false">
 
                         {{tab.userName}}
 
@@ -36,8 +36,8 @@
                             </div>
 
                             <ul class="list-group list-group-flush" v-for="(message,index) in messageList">
-                                <li class="list-group-item" v-if="message.fromUserId==tab.userId || message.fromUserId==tab.userId">
-                                    {{message.message}}
+                                <li v-bind:class="[{ 'list-group-item-success': (message.fromUserId==fromUserId) }, 'list-group-item']" >
+                                    {{message.message}}                                   
                                 </li>
                             </ul>
                         </div>
@@ -67,14 +67,19 @@
                 fromUserId:"@User.GetUserId()"
             },
             methods: {
-                sendMessage: function (tab) {
+                getChatHistory: function (tab) {
+                    var vm = this;
+                    vm.selectedTab = tab;
+                    
 
-                    console.table(tab);
+                },
+                sendMessage: function (tab) {
 
                     var vm = this;
 
                     var msg = {
                         fromUserId: vm.fromUserId,
+                        toUserId:tab.userId,
                         fromUserName: vm.fromUserName,
                         message: vm.message
                     };
@@ -123,14 +128,14 @@
 
                 vm.connection.on("updateMessages", function (fromUserId, toUserId,message) {
 
-                      var msg = {
+                    var msg = {
                         fromUserId: fromUserId,
-                        fromUserName: toUserId,
+                        toUserId: toUserId,
                         message: message
                     };
 
                     vm.messageList.splice(0, 0, msg)
-                    console.table(msg);
+                    console.log(msg.fromUserId + " , "+msg.toUserId+" , "+msg.message);
 
                 });
 
