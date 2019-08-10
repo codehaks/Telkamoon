@@ -36,8 +36,13 @@
                             </div>
 
                             <ul class="list-group list-group-flush" v-for="(message,index) in messageList">
-                                <li v-bind:class="[{ 'list-group-item-success': (message.fromUserId==fromUserId) }, 'list-group-item']" >
-                                    {{message.message}}                                   
+                                <li v-bind:class="[{ 'list-group-item-success': (message.fromUserId==fromUserId) }, 'list-group-item']">
+                                    {{message.message}}
+                                    {{message.fromUserId==fromUserId}}
+                                    {{message.toUserId==selectedTab.userId}}
+
+                                    ({{message.toUserId==fromUserId || message.toUserId==selectedTab.userId}})
+
                                 </li>
                             </ul>
                         </div>
