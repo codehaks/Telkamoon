@@ -39,5 +39,13 @@ namespace Portal.Web.Hubs
         {
             await Clients.All.SendAsync("updateUserStatus", Context.User.Identity.Name, false);
         }
+
+        public void SendTypingStatus(string fromUserId, string toUserId, string typingStatus)
+        {           
+            Clients.User(toUserId)
+                .SendAsync("updateTypingStatus", fromUserId,toUserId, typingStatus);
+        }
+
+
     }
 }

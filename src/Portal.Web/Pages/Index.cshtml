@@ -29,12 +29,11 @@
 
                         <div class="card">
                             <div class="card-header bg-primary text-white">
-                                {{tab.userName}}
-                                {{tab.userId}}
+                                {{tab.userName}} {{tab.typingStatus}}
                             </div>
                             <div class="card-body">
 
-                                <input class="form-control" id="message" v-model="message" v-on:keyup.enter.prevent="sendMessage(tab)" />
+                                <input class="form-control" id="message" v-on:keydown="sendTypingStatus(tab)" v-model="message" v-on:keyup.enter.prevent="sendMessage(tab)" />
                                 <button class="btn btn-primary m-1" id="send" v-on:click="sendMessage(tab)"> <i class="fa fa-paper-plane"></i></button>
 
                             </div>
@@ -75,6 +74,11 @@
                 fromUserId:"@User.GetUserId()"
             },
             methods: {
+                sendTypingStatus: function (tab) {
+                    var vm = this;
+
+                     this.connection.invoke("sendTypingStatus", vm.fromUserId,tab.userId, " is typing... ");
+                },
                 getChatHistory: function (tab) {
                     var vm = this;
                     vm.selectedTab = tab;
@@ -121,7 +125,8 @@
                                 userName: vm.users[i].userName,
                                 userId: vm.users[i].id,
                                 unread: 0,
-                                connected: false
+                                connected: false,
+                                typingStatus:""
                             };
                             vm.tabs.push(newTab);
                         }
@@ -137,10 +142,30 @@
                     .withUrl("/chatHub")
                     .build();
 
+                var notTypingChecker = function timeout() {
+                            setTimeout(function () {
+                    vm.connection.invoke("sendTypingStatus", vm.fromUserId,vm.selectedTab.userId, "");
+                    timeout();
+                }, 5000);
+                }
+                notTypingChecker();
+
                 vm.connection.on('updateUserStatus', function (user, IsConnected) {
                     var userTab = _.findIndex(vm.tabs, function (o) { return o.userName == user; });
                     if (userTab != -1) {
                         vm.tabs[userTab].connected = IsConnected;
+                    }
+                });
+
+                vm.connection.on('updateTypingStatus', function (fromUserId, toUserId, typingStatus) {
+
+                    var userTab = _.findIndex(vm.tabs, function (o) {
+
+                         return o.userId == fromUserId;
+                     });
+
+                    if (userTab != -1) {
+                        vm.tabs[userTab].typingStatus = typingStatus;
                     }
                 });
 
