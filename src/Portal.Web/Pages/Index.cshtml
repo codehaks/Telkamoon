@@ -23,10 +23,13 @@
                     <div class="tab-pane fade" :id="'v-pills-'+tab.userName" role="tabpanel" :aria-labelledby="'v-pills-'+tab.userName+'-tab'">
 
                         <div class="card">
-                            <div class="card-header bg-primary">
+                            <div class="card-header bg-primary text-white">
                                 {{tab.userName}}
                             </div>
                             <div class="card-body">
+
+                                <input class="form-control" id="message" v-model="message" v-on:keyup.enter.prevent="sendMessage" />
+                                <button class="btn btn-primary m-1" id="send" v-on:click="sendMessage"> <i class="fa fa-paper-plane"></i></button>
 
                             </div>
                         </div>
@@ -50,6 +53,8 @@
                 users: [],
                 selectedTab: null,
                 connection: "",
+
+                message: ""
             },
             methods: {},
             created: function () { },
@@ -69,9 +74,6 @@
                             };
                             vm.tabs.push(newTab);
                         }
-
-                        console.log("Done");
-                        console.table(vm.tabs);
 
                     }).fail(function () {
                         //toastr.error("Can not add new bug!");
