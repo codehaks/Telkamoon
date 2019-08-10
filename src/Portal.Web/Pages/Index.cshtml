@@ -3,130 +3,31 @@
     ViewData["Title"] = "Home";
 }
 
-@*<h1>Welcome</h1>
-    <hr />
-    <div id="status"></div>
+<div id="app">
+    <div class="row">
+        <div class="col-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <template v-for="(tab,index) in tabs">
+                    <a class="nav-link" style="border-radius:0;padding-bottom:9px" :id="'v-pills-'+tab.userName+'-tab'" data-toggle="pill" :href="'#v-pills-'+tab.userName" role="tab" :aria-controls="'v-pills-'+tab.userName" aria-selected="false">
 
-    @await Component.InvokeAsync("UserList")*@
+                        {{tab.userName}}
 
+                    </a>
+                </template>
 
-
-<div class="row  no-gutters">
-    <div class="col-sm-6 col-md-4 bg-dark">
-        <div class="nav flex-column nav-pills rounded-0" style="border-radius:0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <template v-for="(tab,index) in tabs">
-                <a class="nav-link" v-on:click="getChatHistory(tab)" style="border-radius:0;padding-bottom:9px" :id="'v-pills-'+tab.fromUser+'-tab'" data-toggle="pill" :href="'#v-pills-'+tab.fromUser" role="tab" :aria-controls="'v-pills-'+tab.fromUser" aria-selected="false">
-                    <i class="fa fa-user fa-2x"></i>
-                    {{tab.fromFullName}}
-
-                    <span v-if="tab.unread>0" class="badge badge-danger pull-left mt-2"> {{tab.unread}}</span>
-                </a>
-            </template>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+            </div>
         </div>
     </div>
-    <div class="col-sm-6 col-md-8">
-        <div class="tab-content" id="v-pills-tabContent">
-            <template v-for="(tab,index) in tabs">
-                <div class="tab-pane fade" :id="'v-pills-'+tab.fromUser" role="tabpanel" :aria-labelledby="'v-pills-'+tab.fromUser+'-tab'">
-                    <div class="card bg-primary rounded-0">
-                        <div class="card-header  text-white">
-                            <div class="row">
-                                <div class="col-6">
-                                    <i class="fa fa-comment-o"></i>
-                                    {{tab.fromFullName}}
-                                </div>
-                                <div class="col-6 text-left">  {{tab.status}}</div>
-                            </div>
 
-
-
-                        </div>
-                        <div class="card-body bg-light">
-                            <input class="form-control" id="message" v-model="message" v-on:keyup.enter.prevent="sendMessage" />
-                            <div class="form-inline">
-                                <button class="btn btn-primary m-1" id="send" v-on:click="sendMessage"> <i class="fa fa-paper-plane"></i></button>
-                                <div class="dropdown m-1">
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-comment-o"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" v-on:click="sendNote(note)" href="#" v-for="(note,index) in notes">{{note.text}}</a>
-
-                                    </div>
-                                </div>
-
-                                <form enctype="multipart/form-data" method="post" id="upload">
-                                    <input type="text" hidden asp-for="FromUser" />
-                                    <input type="text" hidden asp-for="FromUserId" />
-                                    <input hidden v-on:change="sendFile" type="file" name="file" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" multiple="">
-                                    <label for="file-1" class="btn btn-dark"
-                                           style="font-weight:400;color: #fff;background-color: #007bff;border-color: #007bff;font-size: 1rem;line-height: 1.5;border-radius: 0.25rem;padding: 0.375rem 0.75rem;margin:5px">
-                                        <i class="fa fa-file"></i>
-                                    </label>
-                                </form>
-
-                                <button class="btn btn-secondary" v-on:click="sendCloseTalk(tab,index)">پایان</button>
-                            </div>
-                            <br />
-                            <template v-for="(message,index) in messageList">
-                                <div v-if="message.fromUserName==toUser || message.fromUserName==fromUser">
-
-                                    <div v-bind:class="[ (message.fromUserName==fromUser) ? 'justify-content-start':'justify-content-end' , 'row'] ">
-
-                                        <div class="col-9">
-                                            <div v-bind:class="[{ 'bg-green': (message.fromUserName==fromUser) }, 'card m-1 rounded']" id="messageBox">
-                                                <div class="card-body" style="padding:5px">
-
-                                                    <span class="card-text">
-                                                        <span class="text-muted text-sm-left ml-1 mr-1 align-text-bottom">
-                                                            <small>
-                                                                {{message.timeCreated | shortTime}}
-                                                            </small>
-                                                        </span>
-                                                        <i v-if="message.isSend" class="fa fa-check text-success"></i>
-                                                        <i v-if="message.isRead" class="fa fa-check text-success"></i>
-
-                                                        <span v-if="message.hashcode>0">
-
-
-                                                            <a :href="('/api/message/download/'+message.hashcode)" target="_blank" class="btn btn-link">
-                                                                <span class="fa-stack">
-                                                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                                                    <i class="fa fa-file fa-stack-1x fa-inverse"></i>
-                                                                </span>
-                                                                {{message.body}}
-                                                                پیوست
-                                                            </a>
-
-                                                            <img v-if="message.contentType=='image/jpeg' || message.contentType=='image/png'" :src="('/api/message/download/'+message.hashcode)" class="img-fluid" />
-                                                        </span>
-                                                        <span v-else>
-                                                            {{message.body}}
-                                                        </span>
-
-                                                    </span>
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                            <div class="spinner-border text-success" role="status" v-if="loadingMessages">
-                                <span class="sr-only">در حال بارگذاری...</span>
-                            </div>
-                            <button class="btn btn-sm btn-secondary my-5" v-on:click="getMorePage(tab)">چت های قبلی</button>
-                        </div>
-
-                    </div>
-                </div>
-            </template>
-        </div>
-    </div>
 </div>
-
-
 
 
 @section scripts{
@@ -137,26 +38,51 @@
             el: "#app",
             data: {
                 tabs: [],
+                users: [],
                 selectedTab: null,
-                connection: null,
+                connection: "",
             },
             methods: {},
             created: function () { },
             mounted: function () {
                 var vm = this;
 
-                vm.connection = new signalR
-                    .HubConnectionBuilder()
-                    .withUrl("/statushub")
-                    .build();
+                $.ajax({ url: "/api/user", method: "GET" })
+                    .done(function (data) {
+                        vm.users = data
 
-                connection.on("updateStatus", function (user, status) {
-                    if (user != null) {
-                        $("#status").append('<p>' + user + '->' + status + '</p>');
-                    }
-                });
+                        for (var i = 0; i < vm.users.length; i++) {
+                            var newTab = {
+                                userName: vm.users[i].userName,
+                                userId: vm.users[i].id,
+                                unread: 0,
+                                status: false
+                            };
 
-                connection.start();
+                            vm.tabs.push(newTab);
+
+                            console.log("Done");
+                            console.table(vm.tabs);
+                        }
+                    }).fail(function () {
+                        //toastr.error("Can not add new bug!");
+                    }).always(function () {
+                        //vm.clearData();
+                    });
+
+                //vm.connection = new signalR
+                //    .HubConnectionBuilder()
+                //    .withUrl("/chathub")
+                //    .build();
+
+                //connection.on("updateMessages", function (fUser, message) {
+                //    if (fUser == toUser) {
+                //        $("#chat").append('<p>' + message + '</p>');
+                //    }
+
+                //});
+
+                //connection.start();
             }
         });
     </script>
