@@ -14,13 +14,12 @@
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <template v-for="(tab,index) in tabs">
-                    <a class="nav-link" v-on:click="getChatHistory(tab)" style="border-radius:0;padding-bottom:9px" :id="'v-pills-'+tab.userName+'-tab'" data-toggle="pill" :href="'#v-pills-'+tab.userName" role="tab" :aria-controls="'v-pills-'+tab.userName" aria-selected="false">
+                    <a class="nav-link" v-on:click="getChatHistory(tab)" :id="'v-pills-'+tab.userName+'-tab'" data-toggle="pill" :href="'#v-pills-'+tab.userName" role="tab" :aria-controls="'v-pills-'+tab.userName" aria-selected="false">
 
                         <i class="fa fa-circle text-success" v-if="tab.connected"></i>
                         <i class="fa fa-circle text-muted" v-if="tab.connected==false"></i>
 
                         {{tab.userName}}
-
                         <span v-if="tab.unread>0" class="badge badge-danger"> {{tab.unread}}</span>
 
                     </a>
