@@ -41,7 +41,7 @@
                             <ul class="list-group list-group-flush" v-for="(message,index) in messageList">
                                 <li v-bind:class="[{ 'list-group-item-success': (message.fromUserId==fromUserId) }, 'list-group-item']" v-if="message.toUserId==selectedTab.userId || message.fromUserId==selectedTab.userId">
                                     {{message.message}}
-
+                                    <i v-if="message.isSend" class="fa fa-check text-success"></i>
                                 </li>
                             </ul>
                         </div>
@@ -103,7 +103,10 @@
 
                      var index = vm.messageList.length - 1;
 
-                this.connection.send("SendMessage", vm.fromUserId,  tab.userId, vm.message, )
+                    this.connection.invoke("SendMessage", vm.fromUserId, tab.userId, vm.message)
+                        .catch(err =>
+                            console.error(err.toString())
+                        )
                     .then(function () {
 
                         console.log("message sent." + vm.message);
@@ -144,7 +147,11 @@
 
                 var notTypingChecker = function timeout() {
                             setTimeout(function () {
-                    vm.connection.invoke("sendTypingStatus", vm.fromUserId,vm.selectedTab.userId, "");
+                    //vm.connection.invoke("sendTypingStatus", vm.fromUserId,vm.selectedTab.userId, "");
+                                if (vm.selectedTab!=null) {
+                                    vm.selectedTab.typingStatus = "";
+                                }
+                                
                     timeout();
                 }, 5000);
                 }
