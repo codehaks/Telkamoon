@@ -5,6 +5,10 @@
     ViewData["Title"] = "Home";
 }
 
+@section styles{
+    <link href="~/lib/toastr/toastr.css" rel="stylesheet" />
+}
+
 <div id="app">
     <div class="row">
         <div class="col-3">
@@ -16,6 +20,8 @@
                         <i class="fa fa-circle text-muted" v-if="tab.connected==false"></i>
 
                         {{tab.userName}}
+
+                        <span v-if="tab.unread>0" class="badge badge-danger"> {{tab.unread}}</span>
 
                     </a>
                 </template>
@@ -59,7 +65,13 @@
     <script src="~/lib/vue/vue.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/lib/lodash.js/lodash.js"></script>
-
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "positionClass": "toast-top-left"
+        }
+    </script>
     <script>
         var app = new Vue({
             el: "#app",
@@ -151,7 +163,7 @@
                                 if (vm.selectedTab!=null) {
                                     vm.selectedTab.typingStatus = "";
                                 }
-                                
+
                     timeout();
                 }, 5000);
                 }
@@ -185,7 +197,12 @@
                     };
 
                     vm.messageList.splice(0, 0, msg)
-                    console.log(msg.fromUserId + " , "+msg.toUserId+" , "+msg.message);
+
+                      var userTab = _.findIndex(vm.tabs, function (o) { return o.userId == fromUserId; });
+                if (userTab!=-1) {
+                    vm.tabs[userTab].unread++;
+                    toastr.info(" Message from " + vm.tabs[userTab].userName);
+                }
 
                 });
 
